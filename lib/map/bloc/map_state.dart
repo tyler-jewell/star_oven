@@ -13,27 +13,27 @@ extension LocationStatusX on MapStatus {
 class MapState extends Equatable {
   const MapState({
     this.status = MapStatus.initial,
-    Location? location,
-  }) : location = location ?? Location.empty;
+    this.currentLocation,
+  });
 
   factory MapState.fromJson(Map<String, dynamic> json) =>
       _$MapStateFromJson(json);
 
   final MapStatus status;
-  final Location location;
+  final GeoPoint? currentLocation;
 
   MapState copyWith({
     MapStatus? status,
-    Location? location,
+    GeoPoint? currentLocation,
   }) {
     return MapState(
       status: status ?? this.status,
-      location: location ?? this.location,
+      currentLocation: currentLocation ?? this.currentLocation,
     );
   }
 
   Map<String, dynamic> toJson() => _$MapStateToJson(this);
 
   @override
-  List<Object?> get props => [status, location];
+  List<Object?> get props => [status, currentLocation];
 }

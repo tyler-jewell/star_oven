@@ -11,5 +11,7 @@ dev_dependencies:
   mocktail: ^0.2.0
   test: ^1.19.2
   very_good_analysis: ^2.4.0
-dependencies: 
+
+dependencies:
+  geopoint: ^1.0.0
   location: ^4.3.0

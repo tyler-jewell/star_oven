@@ -1,31 +1,28 @@
 import 'dart:async';
 
+import 'package:geopoint/geopoint.dart';
 import 'package:location/location.dart';
 
 /// Exception thrown when fetching user location data fails or returns null.
 class LocationRequestFailure implements Exception {}
 
-/// Exception thrown if a error occurs while getting the user location.
-class LocationServicesFailure implements Exception {}
-
 /// {@template location_api}
 /// {@endtemplate}
 class LocationApi {
-  /// {@macro location_api}
-  LocationApi();
-
-  final Location _locationClient = Location();
+  final _locationClient = Location();
 
   /// Get users current [Location].
-  Future<LocationData> getUserLocation() async {
+  Future<GeoPoint> getUserLocation() async {
+    final _defaultLocation = GeoPoint(longitude: 0.1, latitude: 0.2);
     var locationServiceEnabled = await _locationClient.serviceEnabled();
     LocationData _locationData;
 
     if (locationServiceEnabled == false) {
       locationServiceEnabled = await _locationClient.requestService();
-      if (locationServiceEnabled == false) {
-        throw LocationServicesFailure();
-      }
+    }
+
+    if (locationServiceEnabled == false) {
+      return _defaultLocation;
     }
 
     try {
@@ -34,6 +31,9 @@ class LocationApi {
       throw LocationRequestFailure();
     }
 
-    return _locationData;
+    return GeoPoint(
+      latitude: _locationData.latitude ?? 0.0,
+      longitude: _locationData.longitude ?? 0.0,
+    );
   }
 }
