@@ -13,14 +13,18 @@ extension LocationStatusX on MapStatus {
 class MapState extends Equatable {
   const MapState({
     this.status = MapStatus.initial,
-    this.currentLocation,
+    this.currentLocation = const GeoPoint(
+      latitude: 0.0,
+      longitude: 0.0,
+    ),
   });
 
   factory MapState.fromJson(Map<String, dynamic> json) =>
       _$MapStateFromJson(json);
 
   final MapStatus status;
-  final GeoPoint? currentLocation;
+  @GeoPointJsonConverter()
+  final GeoPoint currentLocation;
 
   MapState copyWith({
     MapStatus? status,
@@ -36,4 +40,14 @@ class MapState extends Equatable {
 
   @override
   List<Object?> get props => [status, currentLocation];
+}
+
+class GeoPointJsonConverter implements JsonConverter<GeoPoint, GeoPoint> {
+  const GeoPointJsonConverter();
+
+  @override
+  GeoPoint fromJson(GeoPoint value) => value;
+
+  @override
+  GeoPoint toJson(GeoPoint value) => value;
 }
